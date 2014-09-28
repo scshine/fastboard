@@ -1,0 +1,77 @@
+{% include 'header.html' %}
+    <h3>
+      {{ article.board.title }}
+      <a href='/board/{{ article.board.id }}' class="btn btn-success pull-right">Go Back to List</a>
+    </h3>
+    <hr />
+{% if article %}
+  <div class="row">
+    <div class="col-md-12 main">
+      <form method='post' action='/board/{{ article.board.id }}/{{ article.id }}/update'>
+      {% csrf_token %}
+      <!-- contents -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          {{ article.title }}
+          <span class='pull-right'><em>{{ article.author }}</em></span>
+        </div>
+        <div class="panel-body">
+          <textarea class="form-control" id="content" name="article_content" style="height: 300px">{% autoescape off %}{{ article.content }}{% endautoescape %}</textarea>
+          <br>
+          <div class="pull-right">
+            <button type="submit" class="btn btn-default" id="save" style="display:none;">Save</button>
+            <button type="button" class="btn btn-default" id="edit">Edit</button>
+            <button type="button" class="btn btn-default" id="delete">Delete</button>
+          </div>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  <!-- Comment -->
+  <table class="table">
+    <tbody>
+      {% for reply in article.reply_set.all %}
+      <tr>
+        <td class='comment-view' id='index' style="width:10%;">{{ reply.id }}</td>
+        <td class='comment-view' id='content' style="width:70%;">{{ reply.content }}</td>
+        <td class='comment-view' id='date' style="width:20%;">{{ reply.written_date }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan='3'>
+          <form method='post' action='/board/{{ article.board.id }}/{{ article.id }}/reply'>
+            {% csrf_token %}
+            <div class="input-group comment-write {% if reply_error %}has-error{% endif %}">
+              <input type="text" class="form-control" name="reply_content" {% if reply_error %}placeholder='{{ reply_error }}'{% endif %}></input>
+              <span class="input-group-btn">
+                <input class="btn btn-default" type="submit" value="Reply" />
+              </span>
+            </div>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<script>
+  $(document).ready(function() {
+    $('#content').attr('readonly', 'readonly');
+    $('#content').css('background-color', '#fefefe');
+    $('#edit').on("click", onEdit);
+    $('#delete').on("click", onDelete);
+  });
+  function onEdit() {
+    $('#content').removeAttr('readonly');
+    $('#content').css('background-color', '#aaa');
+    $('#save').css("display", 'block');
+    $('#edit').css("display", 'none');
+    $('#delete').css("display", 'none');
+  };
+  function onDelete() {
+    document.location.href = "/board/{{ article.board.id }}/{{ article.id }}/delete";
+  }
+</script>
+{% else %}
+  <p>Invalid access</p>
+{% endif %}
+{% include 'footer.html' %}

@@ -1,0 +1,34 @@
+{% include 'header.html' %}
+{% if board_id %}
+  {% if error_message %}
+  <div>
+    <p class='btn btn-danger'>{{ error_message }}</p>  
+    <hr />
+  </div>
+  {% endif %}
+
+  <div class="row">
+    <div class="col-md-12 main">
+      <form method='post' action='/board/{{board_id}}/submit'>
+      {% csrf_token %}
+      <!-- Content -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <input type="text" class="form-control" name="article_title" placeholder="Article title goes here"></input>
+        </div>
+        <div class="panel-body">
+          <textarea class="form-control" id="content" name="article_content" style="height:300px;"></textarea>
+          <br>
+          <div class="pull-right">
+            <button type="submit" class="btn btn-default" id="save">Save</button>
+            <button type="button" class="btn btn-default" id="edit" style="display:none;">Edit</button>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <p>Invalid access</p>
+{% endif %}
+{% include 'footer.html' %}

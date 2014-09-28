@@ -1,0 +1,20 @@
+{% include 'header.html' %}
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+  <div class="jumbotron">
+    <h1>Login</h1>
+    <p class="lead">Please provide your username and password</p>
+    <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+      {% csrf_token %}
+      <p><input type="text" class="form-control" name="username" placeholder="Please enter your username"></p>
+      <p><input type="password" class="form-control" name="password" placeholder="Please enter your password"></p>
+      <input type="hidden" name="next" value="{{ next }}" />
+      <div>
+        <input class="btn btn-lg btn-success" type='submit' value='Login' />
+        <a href='/board/signup' class='btn btn-lg btn-primary'>Sign Up</a>
+      </div>
+    </form>
+  </div>
+{% include 'footer.html' %}
+

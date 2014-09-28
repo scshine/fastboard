@@ -1,0 +1,25 @@
+{% include 'header.html' %}
+<h1>Detail</h1>
+<a href="/board">Home</a>
+<br />
+<a href="/board/{{ article.board.id }}">{{ article.board.title }} 게시판으로 이동</a>
+{% if article %}
+	<h2>{{ article.title }}</h2>
+	<div style='font-size:0.7em;'>
+		<p><em>Written date:</em> {{ article.written_date }}</p>
+		<p><em>Updated date:</em> {{ article.update_date }}</p>
+	</div>
+	<div>
+		<p>{{ article.content }}</p>
+	</div>
+	<h2>Replies</h2>
+	<form method='post' action='/board/{{ article.board.id }}/{{ article.id }}/reply'>
+		{% csrf_token %}
+		<textarea name='reply_content'></textarea>
+		<input type='submit' value='Reply' />
+	</form>
+	{% for reply in article.reply_set.all %}
+		<p>{{ reply.written_date }} : {{ reply.content }}</p>
+	{% endfor %}
+{% endif %}
+{% include 'footer.html' %}

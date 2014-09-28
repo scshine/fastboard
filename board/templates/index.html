@@ -1,0 +1,28 @@
+{% include 'header.html' %}
+  <div class="jumbotron">
+    <h1>FastBoard</h1>
+    <p class="lead">Create a new board with a cool name!</p>
+    <form method='post' action='/board/submit'>
+      {% csrf_token %}
+      <p><input type="text" class="form-control" name="board_title" placeholder="Please enter the board title"></p>
+      <p><input type="text" class="form-control" name="board_desc" placeholder="Describe this board!"></p>
+      <p><input class="btn btn-lg btn-success" type='submit' value='Create a Board' /></p>
+    </form>
+  </div>
+{% if boards %}
+  <div class="row marketing">
+  {% for board in boards %}
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+    <h3>{{ board.title }}</h3>
+    <p>{{ board.desc }}</p>
+    <p><a class="btn btn-lg btn-success" href="/board/{{ board.id }}" role="button">Go to Board</a></p>
+  </div>
+  {% endfor %}
+  </div>
+{% else %}
+  <div style="text-align:center;" class="container">
+    <h3>No Boards Available</h3>
+    <br />
+  </div>
+{% endif %}
+{% include 'footer.html' %}
