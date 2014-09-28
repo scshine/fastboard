@@ -159,7 +159,7 @@ def submit_article(request, board_id):
 		return render(request, 'article_write.html', e.errors)
 	else:
 		board = get_object_or_404(Board, id=board_id)
-		board.article_set.create(title=article_title, content=article_content, author='w3kim')
+		board.article_set.create(title=article_title, content=article_content, author=request.user.username)
 		return HttpResponseRedirect('/board/%s' % (board_id,))
 
 def landing(request):
