@@ -26,8 +26,7 @@ TEMPLATE_DEBUG = True
 
 SECURE_PROXY_SSL_HEADER = ('HTP_X_FORWARDED_PROTO', 'https')
 
-ALLOWED_HOSTS = [*]
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
