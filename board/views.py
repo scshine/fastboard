@@ -31,9 +31,17 @@ def signup_post(request):
 	except ValidationError as e:
 		return render(request, 'signup.html', e.errors)
 	else:
-		user = User.objects.create_user(username, 'youremail@example.com', password)
-		user.save()
-		return render(request, 'signup_success.html', {})
+		try:
+			existing = User.objects.get(username=username)
+			# an existing user found, redirect requester to signup page
+			return render(request, 'signup.html', {
+				'error_message': 'Provided username already exist'
+				})
+		except User.DoesNotExist as e:
+			#expecting this error
+			user = User.objects.create_user(username, 'youremail@example.com', password)
+			user.save()
+			return render(request, 'signup_success.html', {})
 
 def signup(request):
 	if request.method == 'GET':
