@@ -1,1 +1,1 @@
-scshine@gmail.com: gunicorn simpleboard.wsgi --log-file -
+chris: gunicorn simpleboard.wsgi --log-file -
